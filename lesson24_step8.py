@@ -1,18 +1,32 @@
+import math
+import time
+
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support import expected_conditions as ec
 
 browser = webdriver.Chrome()
 
-browser.get("http://suninjuly.github.io/wait2.html")
+link = "http://suninjuly.github.io/explicit_wait2.html"
 
-button = WebDriverWait(browser, 5).until(EC.element_to_be_clickable((By.ID, "verify")))
 
-button.click()
+def calc(x):
+    return str(math.log(abs(12 * math.sin(int(x)))))
 
-message = browser.find_element_by_id("verify_message")
 
-assert "successful" in message.text
-
-browser.quit()
+try:
+    browser.get(link)
+    price = WebDriverWait(browser, 15).until(ec.text_to_be_present_in_element((By.ID, "price"), "100"))
+    button = browser.find_element_by_id("book")
+    if price:
+        button.click()
+        input_value = browser.find_element_by_id("input_value").text
+        answer_value = calc(input_value)
+        input_text = browser.find_element_by_id("answer")
+        input_text.send_keys(answer_value)
+        button_submit = browser.find_element_by_id("solve")
+        button_submit.click()
+finally:
+    time.sleep(20)
+    browser.quit()

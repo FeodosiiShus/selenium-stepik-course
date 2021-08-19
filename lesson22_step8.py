@@ -2,32 +2,29 @@ from selenium import webdriver
 from selenium.webdriver.support.ui import Select
 import math
 import time
+import os
 
-link = "http://suninjuly.github.io/execute_script.html"
+link = "http://suninjuly.github.io/file_input.html"
 
 browser = webdriver.Chrome()
-
-def calc(x):
-    return str(math.log(abs(12 * math.sin(int(x)))))
 
 try:
     browser.get(link)
 
-    x_value = browser.find_element_by_css_selector("span[id='input_value']").text
+    first_name = browser.find_element_by_css_selector("input[placeholder='Enter first name']")
+    first_name.send_keys("name")
 
-    y = calc(x_value)
+    last_name = browser.find_element_by_css_selector("input[placeholder='Enter last name']")
+    last_name.send_keys("ivanov")
 
-    answer = browser.find_element_by_css_selector("input[id='answer']")
-    answer.send_keys(y)
+    email = browser.find_element_by_css_selector("input[placeholder='Enter email']")
+    email.send_keys("email")
 
-    checkbox = browser.find_element_by_css_selector("label[for='robotCheckbox']")
-    checkbox.click()
+    current_dir = os.path.abspath(os.path.dirname(__file__))
+    text_file = browser.find_element_by_css_selector("input[id='file']")
+    text_file.send_keys(os.path.join(current_dir, 'lesson22_step8.txt'))
 
-    button = browser.find_element_by_tag_name("button")
-    browser.execute_script("return arguments[0].scrollIntoView(true);", button)
-    radioButton = browser.find_element_by_css_selector("input[id='robotsRule']")
-    radioButton.click()
-
+    button = browser.find_element_by_css_selector("button[class='btn btn-primary']")
     button.click()
 
 finally:

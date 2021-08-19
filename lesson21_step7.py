@@ -2,7 +2,7 @@ from selenium import webdriver
 import math
 import time
 
-link = "http://suninjuly.github.io/math.html"
+link = "http://suninjuly.github.io/get_attribute.html"
 
 browser = webdriver.Chrome()
 
@@ -13,16 +13,17 @@ def calc(x):
 
 try:
     browser.get(link)
-    x_value = browser.find_element_by_id("input_value").text
-    y = calc(x_value)
 
-    answer = browser.find_element_by_id("answer")
-    answer.send_keys(y)
+    img = browser.find_element_by_css_selector("img[src='images/chest.png']")
+    value_x = img.get_attribute("valuex")
 
-    checkbox = browser.find_element_by_css_selector("[for=robotCheckbox]")
+    input_answer = browser.find_element_by_id("answer")
+    input_answer.send_keys(calc(value_x))
+
+    checkbox = browser.find_element_by_id("robotCheckbox")
     checkbox.click()
 
-    radioButton = browser.find_element_by_css_selector("[for=robotsRule]")
+    radioButton = browser.find_element_by_id("robotsRule")
     radioButton.click()
 
     button = browser.find_element_by_css_selector("button[type=submit]")

@@ -3,22 +3,31 @@ from selenium.webdriver.support.ui import Select
 import math
 import time
 
-link = "http://suninjuly.github.io/selects1.html"
+link = "http://suninjuly.github.io/execute_script.html"
 
 browser = webdriver.Chrome()
+
+def calc(x):
+    return str(math.log(abs(12 * math.sin(int(x)))))
 
 try:
     browser.get(link)
 
-    first_value = browser.find_element_by_css_selector("span[id='num1']").text
-    second_value = browser.find_element_by_css_selector("span[id='num2']").text
+    x_value = browser.find_element_by_css_selector("span[id='input_value']").text
 
-    result = str(int(first_value) + int(second_value))
+    y = calc(x_value)
 
-    select = Select(browser.find_element_by_css_selector("select[id='dropdown']"))
-    select.select_by_value(result)
+    answer = browser.find_element_by_css_selector("input[id='answer']")
+    answer.send_keys(y)
 
-    button = browser.find_element_by_css_selector("button[class='btn btn-default']")
+    checkbox = browser.find_element_by_css_selector("label[for='robotCheckbox']")
+    checkbox.click()
+
+    button = browser.find_element_by_tag_name("button")
+    browser.execute_script("return arguments[0].scrollIntoView(true);", button)
+    radioButton = browser.find_element_by_css_selector("input[id='robotsRule']")
+    radioButton.click()
+
     button.click()
 
 finally:

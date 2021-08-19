@@ -4,21 +4,24 @@ import math
 import time
 import os
 
-link = "http://suninjuly.github.io/alert_accept.html"
+link = "http://suninjuly.github.io/redirect_accept.html"
 
 browser = webdriver.Chrome()
+
 
 def calc(x):
     return str(math.log(abs(12 * math.sin(int(x)))))
 
+
 try:
     browser.get(link)
+    current_window = browser.current_window_handle
 
-    call_alert = browser.find_element_by_css_selector("button[class='btn btn-primary']")
-    call_alert.click()
+    first_button = browser.find_element_by_css_selector("button[class='trollface btn btn-primary']")
+    first_button.click()
 
-    confirm = browser.switch_to.alert
-    confirm.accept()
+    new_window = browser.window_handles[1]
+    browser.switch_to.window(new_window)
 
     x_value = browser.find_element_by_css_selector("span[id='input_value']").text
     y = calc(x_value)
@@ -28,7 +31,6 @@ try:
 
     button = browser.find_element_by_css_selector("button[class='btn btn-primary']")
     button.click()
-
 
 finally:
     time.sleep(20)

@@ -4,28 +4,33 @@ import math
 import time
 import os
 
-link = "http://suninjuly.github.io/file_input.html"
+link = "http://suninjuly.github.io/alert_accept.html"
 
 browser = webdriver.Chrome()
+
+
+def calc(x):
+    return str(math.log(abs(12 * math.sin(int(x)))))
+
 
 try:
     browser.get(link)
 
-    first_name = browser.find_element_by_css_selector("input[placeholder='Enter first name']")
-    first_name.send_keys("name")
+    call_alert = browser.find_element_by_css_selector("button[class='btn btn-primary']")
+    call_alert.click()
 
-    last_name = browser.find_element_by_css_selector("input[placeholder='Enter last name']")
-    last_name.send_keys("ivanov")
+    confirm = browser.switch_to.alert
+    confirm.accept()
 
-    email = browser.find_element_by_css_selector("input[placeholder='Enter email']")
-    email.send_keys("email")
+    x_value = browser.find_element_by_css_selector("span[id='input_value']").text
+    y = calc(x_value)
 
-    current_dir = os.path.abspath(os.path.dirname(__file__))
-    text_file = browser.find_element_by_css_selector("input[id='file']")
-    text_file.send_keys(os.path.join(current_dir, 'lesson22_step8.txt'))
+    answer = browser.find_element_by_css_selector("input[id='answer']")
+    answer.send_keys(y)
 
     button = browser.find_element_by_css_selector("button[class='btn btn-primary']")
     button.click()
+
 
 finally:
     time.sleep(20)

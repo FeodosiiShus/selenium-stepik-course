@@ -1,32 +1,24 @@
 from selenium import webdriver
+from selenium.webdriver.support.ui import Select
 import math
 import time
 
-link = "http://suninjuly.github.io/get_attribute.html"
+link = "http://suninjuly.github.io/selects1.html"
 
 browser = webdriver.Chrome()
-
-
-def calc(x):
-    return str(math.log(abs(12 * math.sin(int(x)))))
-
 
 try:
     browser.get(link)
 
-    img = browser.find_element_by_css_selector("img[src='images/chest.png']")
-    value_x = img.get_attribute("valuex")
+    first_value = browser.find_element_by_css_selector("span[id='num1']").text
+    second_value = browser.find_element_by_css_selector("span[id='num2']").text
 
-    input_answer = browser.find_element_by_id("answer")
-    input_answer.send_keys(calc(value_x))
+    result = str(int(first_value) + int(second_value))
 
-    checkbox = browser.find_element_by_id("robotCheckbox")
-    checkbox.click()
+    select = Select(browser.find_element_by_css_selector("select[id='dropdown']"))
+    select.select_by_value(result)
 
-    radioButton = browser.find_element_by_id("robotsRule")
-    radioButton.click()
-
-    button = browser.find_element_by_css_selector("button[type=submit]")
+    button = browser.find_element_by_css_selector("button[class='btn btn-default']")
     button.click()
 
 finally:
